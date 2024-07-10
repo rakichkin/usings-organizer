@@ -29,3 +29,4 @@ using Mallenom.Configuration.Json;
 using Mallenom.Swashbuckle.AspNetCore;
 using Mallenom.Swashbuckle.AspNetCore.MultiPart;
 using EyeCont.Common.Contracts;
+using Task = System.Threading.Tasks.Task;
