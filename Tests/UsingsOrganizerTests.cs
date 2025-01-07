@@ -1,14 +1,21 @@
-namespace Tests;
+﻿using System.IO;
 
-public class UsingsOrganizerTests
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+
+namespace Tests
 {
-	[Test]
-	public void DefaultUsingsFormattingTest()
+	[TestClass]
+	public class UsingsOrganizerTests
 	{
-		var rawUsings = File.ReadAllText(Path.Combine("TestData", "DefaultUsingsFormattingTest", "raw_usings.txt"));
-		var formattedUsingsActual = UsingsOrganizer.UsingsOrganizer.GetFormattedUsingsBlockText(rawUsings);
-		var formattedUsingsExpected = File.ReadAllText(
+		[TestMethod]
+		public void DefaultUsingsFormattingTest()
+		{
+			var rawUsings = File.ReadAllText(Path.Combine("TestData", "DefaultUsingsFormattingTest", "raw_usings.txt"));
+			var formattedUsingsActual = UsingsOrganizer.UsingsOrganizer.GetFormattedUsingsBlockText(rawUsings);
+			var formattedUsingsExpected = File.ReadAllText(
 			Path.Combine("TestData", "DefaultUsingsFormattingTest", "sorted_and_formatted_usings.txt"));
-		Assert.That(formattedUsingsActual, Is.EqualTo(formattedUsingsExpected));
+
+			Assert.IsTrue(string.Equals(formattedUsingsActual, formattedUsingsExpected));
+		}
 	}
 }
