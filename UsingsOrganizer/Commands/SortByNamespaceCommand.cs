@@ -11,21 +11,14 @@ internal sealed class SortByNamespaceCommand : BaseCommand<SortByNamespaceComman
 		var docView = await VS.Documents.GetActiveDocumentViewAsync();
 		if(docView.TextView == null || !docView.FilePath.EndsWith(".cs")) return;
 
-		try
-		{
+		var edit = docView.Document.TextBuffer.CreateEdit();
+		var startUsingsBlockPosition = edit.Snapshot.Lines.First(l => l.GetText().Contains("using")).Start.Position;
+		var endUsingsBlockPosition = edit.Snapshot.Lines.First(l => l.GetText().Contains("namespace")).Start.Position - 1;
+		var usingsBlockText = edit.Snapshot.GetText(startUsingsBlockPosition, endUsingsBlockPosition - startUsingsBlockPosition).Trim();
 
-			var edit = docView.Document.TextBuffer.CreateEdit();
-			var startUsingsBlockPosition = edit.Snapshot.Lines.First(l => l.GetText().Contains("using")).Start.Position;
-			var endUsingsBlockPosition = edit.Snapshot.Lines.First(l => l.GetText().Contains("namespace")).Start.Position - 1;
-			var usingsBlockText = edit.Snapshot.GetText(startUsingsBlockPosition, endUsingsBlockPosition - startUsingsBlockPosition).Trim();
-
-			var sortedUsingsText = UsingsOrganizer.GetFormattedUsingsBlockText(usingsBlockText);
-			edit.Replace(startUsingsBlockPosition, endUsingsBlockPosition - startUsingsBlockPosition, sortedUsingsText);
-			edit.Apply();
-		}
-		catch(Exception ex) 
-		{
-
-		}
+		var organizer = new UsingsOrganizer();
+		var sortedUsingsText = organizer.Organize(usingsBlockText);
+		edit.Replace(startUsingsBlockPosition, endUsingsBlockPosition - startUsingsBlockPosition, sortedUsingsText);
+		edit.Apply();
 	}
 }

@@ -1,69 +1,96 @@
 ﻿#nullable enable
 
 using System.Collections.Generic;
-using System.Globalization;
-using System.IO;
 using System.Linq;
 using System.Text;
 
-
 namespace UsingsOrganizer;
 
-public static class UsingsOrganizer
+public class UsingsOrganizer
 {
-	public static string GetFormattedUsingsBlockText(string rawUsingsText, UsingsOrganizerOptions options = null)
+	public string Organize(string rawUsingsText)
 	{
-		if(options == null) options = new UsingsOrganizerOptions();
-
 		var separator = FindMostFrequentLineSeparator(rawUsingsText);
 		if(separator == null) return rawUsingsText;
 
 		var lines = rawUsingsText.Split([separator], StringSplitOptions.RemoveEmptyEntries).ToList();
 
-		var systemUsings = GetSortedUsingsByName("System", lines);
-		var mallenomUsings = GetSortedUsingsByName("Mallenom", lines);
-		var eyecontUsings = GetSortedUsingsByName("EyeCont", lines);
+		var usingGroups = GetUsingsGroups(lines);
+		foreach(var group in usingGroups.Values) group.Sort(new UsingComparer());
 
-		lines.Sort(StringComparer.InvariantCulture);
-		var usingsWithEquation = lines.GetAndRemove(l => l.Contains("="));
-		usingsWithEquation.Sort(StringComparer.InvariantCulture);
-		lines = [.. lines, .. usingsWithEquation];
-
-		var resultSb = new StringBuilder();
-
-		if(systemUsings.Count > 0)
-		{
-			resultSb.Append(string.Join(separator, systemUsings) + separator + separator);
-		}
-		if(lines.Count > 0)
-		{
-			resultSb.Append(string.Join(separator, lines) + separator + separator);
-		}
-		if(mallenomUsings.Count > 0)
-		{
-			resultSb.Append(string.Join(separator, mallenomUsings) + separator + separator);
-		}
-		if(eyecontUsings.Count > 0)
-		{
-			resultSb.Append(string.Join(separator, eyecontUsings) + separator + separator);
-		}
-
-		return resultSb.ToString();
+		return ConcatenateUsingsString(usingGroups);
 	}
 
-	private static List<string> GetSortedUsingsByName(string name, List<string> usingLines)
+	private static string ConcatenateUsingsString(IReadOnlyDictionary<string, List<string>> usingGroups)
 	{
-		var targetUsings = usingLines.GetAndRemove(l => l.StartsWith($"using {name}") || l.Contains($"= {name}"));
-		targetUsings.Sort(StringComparer.InvariantCulture);
+		var groups = usingGroups.OrderBy(x => x.Key).ToDictionary(x => x.Key, x => x.Value);
 
-		var usingsWithEquation = targetUsings.GetAndRemove(l => l.Contains("="));
-		usingsWithEquation.Sort(CompareUsings);
+		var sb = new StringBuilder();
+		if(groups.TryGetValue("System", out var systemGroup))
+		{
+			foreach(var @using in systemGroup)
+			{
+				sb.AppendLine(@using);
+			}
+			sb.AppendLine();
+		}
+		groups.Remove("System");
 
-		return targetUsings.Concat(usingsWithEquation).ToList();
+		var hasMallenomGroup = groups.TryGetValue("Mallenom", out var mallenomGroup);
+		var hasEyecontGroup = groups.TryGetValue("EyeCont", out var eyecontGroup);
+		groups.Remove("Mallenom");
+		groups.Remove("EyeCont");
+
+		foreach(var group in groups)
+		{
+			foreach(var @using in group.Value)
+			{
+				sb.AppendLine(@using);
+			}
+			sb.AppendLine();
+		}
+
+		if(hasMallenomGroup)
+		{
+			foreach(var @using in mallenomGroup)
+			{
+				sb.AppendLine(@using);
+			}
+			sb.AppendLine();
+		}
+
+		if(hasEyecontGroup)
+		{
+			foreach(var @using in eyecontGroup)
+			{
+				sb.AppendLine(@using);
+			}
+		}
+
+		var result = sb.ToString();
+		return result;
 	}
 
-	private static int CompareUsings(string u1, string u2)
-		=> string.Compare(u1, u2, false, CultureInfo.GetCultureInfo("en-US"));
+	private static Dictionary<string, List<string>> GetUsingsGroups(IEnumerable<string> codeTextLines)
+	{
+		var usingGroups = new Dictionary<string, List<string>>();
+		foreach(var line in codeTextLines)
+		{
+			var trimmedLine = line.Trim();
+
+			var spaceIndex = trimmedLine.LastIndexOf(" ");
+			var dotIndex = trimmedLine.IndexOf(".");
+
+			string groupName;
+			if(dotIndex == -1) groupName = trimmedLine[(spaceIndex + 1)..(trimmedLine.Length - 1)];
+			else groupName = trimmedLine[(spaceIndex + 1)..(dotIndex)];
+
+			if(!usingGroups.ContainsKey(groupName)) usingGroups[groupName] = [];
+			usingGroups[groupName].Add(line);
+		}
+
+		return usingGroups;
+	}
 
 	private static string? FindMostFrequentLineSeparator(string text)
 	{
@@ -73,6 +100,7 @@ public static class UsingsOrganizer
 			{ "\n", 0 },
 			{ "\r", 0 }
 		};
+
 		for(int i = 0; i < text.Length; i++)
 		{
 			foreach(var sep in separatorCounts.Keys)
