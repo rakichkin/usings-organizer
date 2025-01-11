@@ -11,7 +11,7 @@ namespace UsingsOrganizer
         public const string Name = "UsingsOrganizer";
         public const string Description = @"Visual Studio extension for sorting and organizing connected namespaces in a .cs files";
         public const string Language = "en-US";
-        public const string Version = "0.0.0";
+        public const string Version = "0.1.0";
         public const string Author = "Igor Rakitskii";
         public const string Tags = "";
     }

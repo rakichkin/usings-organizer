@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PackageManifest Version="2.0.0" xmlns="http://schemas.microsoft.com/developer/vsx-schema/2011" xmlns:d="http://schemas.microsoft.com/developer/vsx-schema-design/2011">
     <Metadata>
-        <Identity Id="UsingsOrganizer.18485ab5-a172-4509-bd3e-fda39231ee58" Version="0.0.0" Language="en-US" Publisher="Igor Rakitskii" />
+        <Identity Id="UsingsOrganizer.18485ab5-a172-4509-bd3e-fda39231ee58" Version="0.1.0" Language="en-US" Publisher="Igor Rakitskii" />
         <DisplayName>UsingsOrganizer</DisplayName>
         <Description xml:space="preserve">Visual Studio extension for sorting and organizing connected namespaces in a .cs files</Description>
         <Icon>Resources\Icon.png</Icon>

@@ -1,4 +1,9 @@
 ﻿/*
+ * 
+ * Тестовый класс, предназначенный для проверки работы расширения напрямую через Visual Studio
+ * 
+ */
+
 
 using EyeCont.Infrastructure.Swagger;
 
@@ -41,7 +46,11 @@ using EyeCont.Common.Contracts;
 
 using Task = System.Threading.Tasks.Task;
 
-*/
+
+
+
+
+
 
 namespace Tests
 {
