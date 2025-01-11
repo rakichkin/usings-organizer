@@ -45,7 +45,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Commands\SortByNamespaceCommand.cs" />
+    <Compile Include="Commands\OrganizeUsingsCommand.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UsingComparer.cs" />
     <Compile Include="UsingsOrganizer.cs" />

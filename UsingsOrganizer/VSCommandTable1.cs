@@ -20,6 +20,6 @@ namespace UsingsOrganizer
     /// </summary>
     internal sealed partial class PackageIds
     {
-        public const int SortByNamespaceCommand = 0x0100;
+        public const int OrganizeUsingsCommand = 0x0100;
     }
 }

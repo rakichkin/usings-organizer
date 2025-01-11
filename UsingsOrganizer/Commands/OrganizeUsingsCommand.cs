@@ -5,8 +5,8 @@ using Text = System.Threading.Tasks;
 namespace UsingsOrganizer.Commands;
 
 /// <summary>Команда для выполнения сортировки и организации секции подключенных пространств имён в .cs-файле.</summary>
-[Command(PackageIds.SortByNamespaceCommand)]
-internal sealed class SortByNamespaceCommand : BaseCommand<SortByNamespaceCommand>
+[Command(PackageIds.OrganizeUsingsCommand)]
+internal sealed class OrganizeUsingsCommand : BaseCommand<OrganizeUsingsCommand>
 {
 	private readonly UsingComparer _usingStringComparer = new();
 

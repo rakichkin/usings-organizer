@@ -10,13 +10,13 @@
 		<!--This section defines the elements the user can interact with, like a menu command or a button
 		or combo box in a toolbar. -->
 		<Buttons>
-			<Button guid="UsingsOrganizer" id="SortByNamespaceCommand" priority="0x0000" type="Button">
+			<Button guid="UsingsOrganizer" id="OrganizeUsingsCommand" priority="0x0000" type="Button">
 				<Parent guid="VSMainMenu" id="CodeWindow.TextEditGroup"/>
-				<Icon guid="ImageCatalogGuid" id="SortByNamespace"/>
+				<Icon guid="ImageCatalogGuid" id="OrganizeUsings"/>
 				<CommandFlag>IconIsMoniker</CommandFlag>
 				<Strings>
-					<ButtonText>Sort Usings</ButtonText>
-					<LocCanonicalName>.UsingsOrganizer.SortUsings</LocCanonicalName>
+					<ButtonText>Ogranize Usings</ButtonText>
+					<LocCanonicalName>.UsingsOrganizer.OrganizeUsings</LocCanonicalName>
 				</Strings>
 			</Button>
 		</Buttons>
@@ -24,7 +24,7 @@
 	
 	<Symbols>
 		<GuidSymbol name="UsingsOrganizer" value="{55f579fd-2e4a-4196-a606-214bb3368b37}">
-			<IDSymbol name="SortByNamespaceCommand" value="0x0100"/>
+			<IDSymbol name="OrganizeUsingsCommand" value="0x0100"/>
 		</GuidSymbol>
 	</Symbols>
 </CommandTable>
