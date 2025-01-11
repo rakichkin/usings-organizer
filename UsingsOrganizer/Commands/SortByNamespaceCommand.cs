@@ -1,4 +1,6 @@
 ﻿using System.Linq;
+using Text = System.Threading.Tasks;
+
 
 namespace UsingsOrganizer.Commands;
 
@@ -30,8 +32,8 @@ internal sealed class SortByNamespaceCommand : BaseCommand<SortByNamespaceComman
 		{
 			await VS.MessageBox.ShowErrorAsync(
 				"An error occurred while organizing usings. See details in the Output Window.");
-			var pane = await VS.Windows.CreateOutputWindowPaneAsync("Usings Organizer");
-			await pane.WriteLineAsync(ex.ToString());
+			await ex.LogAsync();
+			edit.Cancel();
 			return;
 		}
 		edit.Replace(startUsingsBlockPosition, endUsingsBlockPosition - startUsingsBlockPosition, sortedUsingsText);
