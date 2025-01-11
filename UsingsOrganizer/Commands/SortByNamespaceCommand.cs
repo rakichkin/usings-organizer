@@ -15,13 +15,25 @@ internal sealed class SortByNamespaceCommand : BaseCommand<SortByNamespaceComman
 		var docView = await VS.Documents.GetActiveDocumentViewAsync();
 		if(docView.TextView == null || !docView.FilePath.EndsWith(".cs")) return;
 
-		var edit = docView.Document.TextBuffer.CreateEdit();
+		using var edit = docView.Document.TextBuffer.CreateEdit();
 		var startUsingsBlockPosition = edit.Snapshot.Lines.First(l => l.GetText().Contains("using")).Start.Position;
 		var endUsingsBlockPosition = edit.Snapshot.Lines.First(l => l.GetText().Contains("namespace")).Start.Position - 1;
 		var usingsBlockText = edit.Snapshot.GetText(startUsingsBlockPosition, endUsingsBlockPosition - startUsingsBlockPosition).Trim();
 
 		var organizer = new UsingsOrganizer(_usingStringComparer);
-		var sortedUsingsText = organizer.Organize(usingsBlockText);
+		string sortedUsingsText;
+		try
+		{
+			sortedUsingsText = organizer.Organize(usingsBlockText);
+		}
+		catch(Exception ex)
+		{
+			await VS.MessageBox.ShowErrorAsync(
+				"An error occurred while organizing usings. See details in the Output Window.");
+			var pane = await VS.Windows.CreateOutputWindowPaneAsync("Usings Organizer");
+			await pane.WriteLineAsync(ex.ToString());
+			return;
+		}
 		edit.Replace(startUsingsBlockPosition, endUsingsBlockPosition - startUsingsBlockPosition, sortedUsingsText);
 		edit.Apply();
 	}
