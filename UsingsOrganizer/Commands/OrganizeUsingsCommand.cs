@@ -1,8 +1,4 @@
-﻿using System.Linq;
-using Text = System.Threading.Tasks;
-
-
-namespace UsingsOrganizer.Commands;
+﻿namespace UsingsOrganizer.Commands;
 
 /// <summary>Команда для выполнения сортировки и организации секции подключенных пространств имён в .cs-файле.</summary>
 [Command(PackageIds.OrganizeUsingsCommand)]
@@ -14,19 +10,23 @@ internal sealed class OrganizeUsingsCommand : BaseCommand<OrganizeUsingsCommand>
 	protected override async Task ExecuteAsync(OleMenuCmdEventArgs e)
 	{
 		await Package.JoinableTaskFactory.SwitchToMainThreadAsync();
-		var docView = await VS.Documents.GetActiveDocumentViewAsync();
-		if(docView.TextView == null || !docView.FilePath.EndsWith(".cs")) return;
 
-		using var edit = docView.Document.TextBuffer.CreateEdit();
-		var startUsingsBlockPosition = edit.Snapshot.Lines.First(l => l.GetText().Contains("using")).Start.Position;
-		var endUsingsBlockPosition = edit.Snapshot.Lines.First(l => l.GetText().Contains("namespace")).Start.Position - 1;
-		var usingsBlockText = edit.Snapshot.GetText(startUsingsBlockPosition, endUsingsBlockPosition - startUsingsBlockPosition).Trim();
+		var activeDocument = await VS.Documents.GetActiveDocumentViewAsync();
+		if(activeDocument.TextView == null || !activeDocument.TextBuffer.ContentType.IsOfType("CSharp")) return;
 
+		var textBuffer = activeDocument.TextBuffer;
+		var textSnapshot = textBuffer.CurrentSnapshot;
+		var text = textSnapshot.GetText();
+		var usingsSectionStart = text.IndexOf("using");
+		var usingsSectionEnd = text.IndexOf("namespace") - 1;
+		var usingsTextBlock = text[usingsSectionStart.. usingsSectionEnd];
+		using var edit = textBuffer.CreateEdit();
 		var organizer = new UsingsOrganizer(_usingStringComparer);
-		string sortedUsingsText;
 		try
 		{
-			sortedUsingsText = organizer.Organize(usingsBlockText);
+			string organizedUsingsBlock = organizer.Organize(usingsTextBlock);
+			var textWithOrganizedUsings = text.Replace(usingsTextBlock, organizedUsingsBlock);
+			edit.Replace(0, text.Length, textWithOrganizedUsings);
 		}
 		catch(Exception ex)
 		{
@@ -36,7 +36,6 @@ internal sealed class OrganizeUsingsCommand : BaseCommand<OrganizeUsingsCommand>
 			edit.Cancel();
 			return;
 		}
-		edit.Replace(startUsingsBlockPosition, endUsingsBlockPosition - startUsingsBlockPosition, sortedUsingsText);
 		edit.Apply();
 	}
 }

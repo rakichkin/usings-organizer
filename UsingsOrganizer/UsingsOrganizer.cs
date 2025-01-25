@@ -17,7 +17,7 @@ public class UsingsOrganizer(IComparer<string> usingStringComparer)
 		var newlineSymbol = FindMostFrequentLineSeparator(rawUsingsText);
 		if(newlineSymbol == null) return rawUsingsText;
 
-		var lines = rawUsingsText.Split([newlineSymbol], StringSplitOptions.RemoveEmptyEntries).ToList();
+		var lines = rawUsingsText.Split(['\r', '\n'], StringSplitOptions.RemoveEmptyEntries).ToList();
 
 		CheckNotSupportedUsings(lines);
 
@@ -81,6 +81,7 @@ public class UsingsOrganizer(IComparer<string> usingStringComparer)
 		var usingGroups = new Dictionary<string, List<string>>();
 		foreach(var line in usingLines)
 		{
+			if(!line.Contains("using")) continue;
 			var trimmedLine = line.Trim();
 
 			var spaceIndex = trimmedLine.LastIndexOf(" ");

@@ -12,7 +12,7 @@
 		<Buttons>
 			<Button guid="UsingsOrganizer" id="OrganizeUsingsCommand" priority="0x0000" type="Button">
 				<Parent guid="VSMainMenu" id="CodeWindow.TextEditGroup"/>
-				<Icon guid="ImageCatalogGuid" id="OrganizeUsings"/>
+				<Icon guid="ImageCatalogGuid" id="SortByNamespace"/>
 				<CommandFlag>IconIsMoniker</CommandFlag>
 				<Strings>
 					<ButtonText>Ogranize Usings</ButtonText>
