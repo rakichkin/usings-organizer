@@ -4,7 +4,6 @@
  * 
  */
 
-
 using EyeCont.Infrastructure.Swagger;
 
 using System.Reflection;
@@ -43,9 +42,6 @@ using System.IO;
 
 using Mallenom.Swashbuckle.AspNetCore.MultiPart;
 using EyeCont.Common.Contracts;
-
-using Task = System.Threading.Tasks.Task;
-
 
 
 
