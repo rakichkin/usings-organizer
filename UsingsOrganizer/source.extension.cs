@@ -8,10 +8,10 @@ namespace UsingsOrganizer
     internal sealed partial class Vsix
     {
         public const string Id = "UsingsOrganizer.18485ab5-a172-4509-bd3e-fda39231ee58";
-        public const string Name = "UsingsOrganizer";
+        public const string Name = "Usings Organizer";
         public const string Description = @"Visual Studio extension for sorting and organizing connected namespaces in a .cs files";
         public const string Language = "en-US";
-        public const string Version = "0.1.1";
+        public const string Version = "0.1.2";
         public const string Author = "Igor Rakitskii";
         public const string Tags = "";
     }

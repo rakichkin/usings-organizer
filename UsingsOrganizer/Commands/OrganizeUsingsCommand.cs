@@ -18,7 +18,12 @@ internal sealed class OrganizeUsingsCommand : BaseCommand<OrganizeUsingsCommand>
 		var textSnapshot = textBuffer.CurrentSnapshot;
 		var text = textSnapshot.GetText();
 		var usingsSectionStart = text.IndexOf("using");
-		var usingsSectionEnd = text.IndexOf("namespace") - 1;
+		var usingsSectionEnd = text.IndexOf("namespace");
+		if(usingsSectionEnd == -1)
+		{
+			await VS.MessageBox.ShowErrorAsync("Top-level files are not supported yet.");
+			return;
+		}
 		var usingsTextBlock = text[usingsSectionStart.. usingsSectionEnd];
 		using var edit = textBuffer.CreateEdit();
 		var organizer = new UsingsOrganizer(_usingStringComparer);
@@ -31,7 +36,7 @@ internal sealed class OrganizeUsingsCommand : BaseCommand<OrganizeUsingsCommand>
 		catch(Exception ex)
 		{
 			await VS.MessageBox.ShowErrorAsync(
-				"An error occurred while organizing usings. See details in the Output Window.");
+				"An error occurred while organizing usings. See details in the Extensions section of Output Window.");
 			await ex.LogAsync();
 			edit.Cancel();
 			return;
