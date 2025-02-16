@@ -104,6 +104,8 @@ public class UsingsOrganizer(IComparer<string> usingStringComparer)
 	/// <returns>Строка, представляющая организованную секцию подключенных пространств имён.</returns>
 	private static string ConcatenateUsingsString(IReadOnlyDictionary<string, List<string>> usingGroups, string newlineSymbol)
 	{
+		if(usingGroups.Count == 0) return string.Empty;
+
 		var groups = usingGroups.OrderBy(x => x.Key).ToDictionary(x => x.Key, x => x.Value);
 
 		var sb = new StringBuilder();
@@ -113,7 +115,6 @@ public class UsingsOrganizer(IComparer<string> usingStringComparer)
 			{
 				sb.Append(@using + newlineSymbol);
 			}
-			sb.Append(newlineSymbol);
 		}
 		groups.Remove("System");
 
@@ -124,30 +125,32 @@ public class UsingsOrganizer(IComparer<string> usingStringComparer)
 
 		foreach(var group in groups)
 		{
+			if(sb.Length != 0) sb.Append(newlineSymbol);
 			foreach(var @using in group.Value)
 			{
 				sb.Append(@using + newlineSymbol);
 			}
-			sb.Append(newlineSymbol);
 		}
 
 		if(hasMallenomGroup)
 		{
+			if(sb.Length != 0) sb.Append(newlineSymbol);
 			foreach(var @using in mallenomGroup)
 			{
 				sb.Append(@using + newlineSymbol);
 			}
-			sb.Append(newlineSymbol);
 		}
 
 		if(hasEyecontGroup)
 		{
+			if(sb.Length != 0) sb.Append(newlineSymbol);
 			foreach(var @using in eyecontGroup)
 			{
 				sb.Append(@using + newlineSymbol);
 			}
 		}
 
+		sb.Append(newlineSymbol);
 		var result = sb.ToString();
 		return result;
 	}
