@@ -7,16 +7,19 @@
 	<Include href="VSGlobals.vsct"/>
 	
 	<Commands package="UsingsOrganizer">
-		<!--This section defines the elements the user can interact with, like a menu command or a button
-		or combo box in a toolbar. -->
+		<Groups>
+			<Group guid="UsingsOrganizer" id="OrganizeUsingsMenuGroup" priority="0x0100">
+				<Parent guid="guidSHLMainMenu" id="IDM_VS_CTXT_CODEWIN"/>
+			</Group>
+		</Groups>
+		
 		<Buttons>
 			<Button guid="UsingsOrganizer" id="OrganizeUsingsCommand" priority="0x0000" type="Button">
-				<Parent guid="VSMainMenu" id="CodeWindow.TextEditGroup"/>
+				<Parent guid="UsingsOrganizer" id="OrganizeUsingsMenuGroup"/>
 				<Icon guid="ImageCatalogGuid" id="SortByNamespace"/>
 				<CommandFlag>IconIsMoniker</CommandFlag>
 				<Strings>
-					<ButtonText>Ogranize Usings</ButtonText>
-					<LocCanonicalName>.UsingsOrganizer.OrganizeUsings</LocCanonicalName>
+					<ButtonText>Organize Usings</ButtonText>
 				</Strings>
 			</Button>
 		</Buttons>
@@ -24,7 +27,8 @@
 	
 	<Symbols>
 		<GuidSymbol name="UsingsOrganizer" value="{55f579fd-2e4a-4196-a606-214bb3368b37}">
-			<IDSymbol name="OrganizeUsingsCommand" value="0x0100"/>
+			<IDSymbol name="OrganizeUsingsMenuGroup" value="0x0001" />
+			<IDSymbol name="OrganizeUsingsCommand" value="0x0100" />
 		</GuidSymbol>
 	</Symbols>
 </CommandTable>

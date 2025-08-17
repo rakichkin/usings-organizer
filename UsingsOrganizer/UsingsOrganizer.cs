@@ -32,11 +32,15 @@ public class UsingsOrganizer(IComparer<string> usingStringComparer)
 	/// <returns>Наиболее часто встречаемый символ перехода на новую строку, либо <see langword="null"/>, если такого символа в тексте нет.</returns>
 	private static string? FindMostFrequentLineSeparator(string text)
 	{
+		const string CRLF = "\r\n";
+		const string LF = "\n";
+		const string CR = "\r";
+
 		var separatorCounts = new Dictionary<string, int>()
 		{
-			{ "\r\n", 0 },
-			{ "\n", 0 },
-			{ "\r", 0 }
+			{ CRLF, 0 },
+			{ LF, 0 },
+			{ CR, 0 }
 		};
 
 		for(int i = 0; i < text.Length; i++)
