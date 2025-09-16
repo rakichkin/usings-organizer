@@ -1,14 +1,15 @@
-﻿#nullable enable
-
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace UsingsOrganizer;
+namespace UsingsOrganizer.Core;
 
 /// <summary>Органайзер секции подключенных пространств имён.</summary>
-public class UsingsOrganizer(IComparer<string> usingStringComparer)
+public class UsingsOrganizer
 {
+	private readonly IComparer<string> _usingStringComparer = new UsingComparer();
+
 	/// <summary>Организовывает (делит на секции и сортирует) пространства имён в строке <paramref name="rawUsingsText"/>.</summary>
 	/// <param name="rawUsingsText">Секция из .cs-файла с подключенными пространствами имён.</param>
 	/// <returns>Секция с организованными пространствами имён.</returns>
@@ -21,7 +22,7 @@ public class UsingsOrganizer(IComparer<string> usingStringComparer)
 
 		CheckNotSupportedUsings(lines);
 
-		lines.Sort(usingStringComparer);
+		lines.Sort(_usingStringComparer);
 		var usingGroups = SplitByUsingGroups(lines);
 
 		return ConcatenateUsingsString(usingGroups, newlineSymbol);
@@ -93,7 +94,7 @@ public class UsingsOrganizer(IComparer<string> usingStringComparer)
 
 			string groupName;
 			if(dotIndex == -1) groupName = trimmedLine[(spaceIndex + 1)..(trimmedLine.Length - 1)];
-			else groupName = trimmedLine[(spaceIndex + 1)..(dotIndex)];
+			else groupName = trimmedLine[(spaceIndex + 1)..dotIndex];
 
 			if(!usingGroups.ContainsKey(groupName)) usingGroups[groupName] = [];
 			usingGroups[groupName].Add(line);
@@ -154,7 +155,6 @@ public class UsingsOrganizer(IComparer<string> usingStringComparer)
 			}
 		}
 
-		sb.Append(newlineSymbol);
 		var result = sb.ToString();
 		return result;
 	}

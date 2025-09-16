@@ -50,8 +50,6 @@
   <ItemGroup>
     <Compile Include="Commands\OrganizeUsingsCommand.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="UsingComparer.cs" />
-    <Compile Include="UsingsOrganizer.cs" />
     <Compile Include="UsingsOrganizerOptions.cs" />
     <Compile Include="UsingsOrganizerPackage.cs" />
     <Compile Include="source.extension.cs">
@@ -102,6 +100,12 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\UsingsOrganizer.Core\UsingsOrganizer.Core.csproj">
+      <Project>{98f04c1d-b1f3-22c8-5875-28e63294ba47}</Project>
+      <Name>UsingsOrganizer.Core</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(VSToolsPath)\VSSDK\Microsoft.VsSDK.targets" Condition="'$(VSToolsPath)' != ''" />

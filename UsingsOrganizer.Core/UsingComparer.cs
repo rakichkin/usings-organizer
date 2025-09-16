@@ -1,6 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
-namespace UsingsOrganizer;
+namespace UsingsOrganizer.Core;
 
 /// <summary>Компаратор для сравнения строк, представляющих подключенные пространства имён в .cs-файле.</summary>
 /// <remarks>

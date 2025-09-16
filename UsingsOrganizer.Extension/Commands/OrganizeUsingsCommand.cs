@@ -1,11 +1,11 @@
-﻿namespace UsingsOrganizer.Commands;
+﻿using UsingsOrganizer.Core;
+
+namespace UsingsOrganizer.Extension.Commands;
 
 /// <summary>Команда для выполнения сортировки и организации секции подключенных пространств имён в .cs-файле.</summary>
 [Command(PackageIds.OrganizeUsingsCommand)]
 internal sealed class OrganizeUsingsCommand : BaseCommand<OrganizeUsingsCommand>
 {
-	private readonly UsingComparer _usingStringComparer = new();
-
 	/// <inheritdoc/>
 	protected override async Task ExecuteAsync(OleMenuCmdEventArgs e)
 	{
@@ -26,7 +26,7 @@ internal sealed class OrganizeUsingsCommand : BaseCommand<OrganizeUsingsCommand>
 		}
 		var usingsTextBlock = text[usingsSectionStart.. usingsSectionEnd];
 		using var edit = textBuffer.CreateEdit();
-		var organizer = new UsingsOrganizer(_usingStringComparer);
+		var organizer = new UsingsOrganizer.Core.UsingsOrganizer();
 		try
 		{
 			string organizedUsingsBlock = organizer.Organize(usingsTextBlock);

@@ -1,4 +1,4 @@
-﻿namespace UsingsOrganizer;
+﻿namespace UsingsOrganizer.Extension;
 
 /// <summary>Параметры организации подключенных пространств имён.</summary>
 /// <remarks>Пока не реализовано.</remarks>
