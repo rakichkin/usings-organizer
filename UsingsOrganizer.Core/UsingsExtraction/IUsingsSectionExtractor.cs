@@ -4,5 +4,5 @@ namespace UsingsOrganizer.Core.UsingsExtraction;
 
 public interface IUsingsSectionExtractor
 {
-	IEnumerable<string> Extract(string sourceCodeText);
+	IReadOnlyList<UsingSection> Extract(string sourceCodeText);
 }

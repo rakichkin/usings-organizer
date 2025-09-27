@@ -8,7 +8,7 @@ namespace UsingsOrganizer.Core;
 /// <summary>Органайзер секции подключенных пространств имён.</summary>
 public class UsingsOrganizer
 {
-	private readonly IComparer<string> _usingStringComparer = new UsingComparer();
+	private readonly IComparer<string> _usingStringComparer = new UsingsComparer();
 
 	/// <summary>Организовывает (делит на секции и сортирует) пространства имён в строке <paramref name="rawUsingsText"/>.</summary>
 	/// <param name="rawUsingsText">Секция из .cs-файла с подключенными пространствами имён.</param>

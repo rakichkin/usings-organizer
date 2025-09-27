@@ -7,7 +7,7 @@ namespace UsingsOrganizer.Core;
 /// <remarks>
 /// Извлекает из строки формата `using <![CDATA[<]]>Namespace.Name<![CDATA[>]]>;` пространство имён и подает его на сравнение. 
 /// </remarks>
-public class UsingComparer : IComparer<string>
+public class UsingsComparer : IComparer<string>
 {
 	/// <inheritdoc/>
 	public int Compare(string x, string y)
